@@ -12,19 +12,63 @@ class Profile(models.Model):
     # nick_name = models.CharField(max_length=50, null=True)
     image = models.ImageField(upload_to="profile/", null=True)
 
+    class Meta:
+        ordering = ("user",)
+
+    def __str__(self):
+        return str(self.user).capitalize()
+
+# -------------------------------- #
+
 
 class Preferences(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     metric = models.BooleanField(default=True)
+    cooking_time = models.ManyToManyField("Cooktime")
+    diet = models.ManyToManyField("Diet")
+    cuisine = models.ManyToManyField("Cuisine")
 
+    class Meta:
+        ordering = ("user",)
+
+    def __str__(self):
+        return str(self.user).capitalize()
+
+# -------------------------------- #
+
+class Cooktime(models.Model):
+    cook_times= models.CharField(max_length=50)
+
+    class Meta:
+        ordering = ("cook_times",)
+
+    def __str__(self):
+        return str(self.cook_times).capitalize()
+
+# -------------------------------- #
 
 class Diet(models.Model):
     name = models.CharField(max_length=50)
 
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return str(self.name).capitalize()
+
+# -------------------------------- #
 
 class DietRequirement(models.Model):
     user = models.ForeignKey(User, related_name="diet_requirements", on_delete=models.CASCADE)
     diet = models.ForeignKey(Diet, related_name="users", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ("user",)
+
+    def __str__(self):
+        return str(self.user).capitalize()
+
+# -------------------------------- #
 
 
 class Recipe(models.Model):
@@ -49,6 +93,7 @@ class Recipe(models.Model):
 
 
 # --------------------- #
+
 
 
 class Ingredient(models.Model):
