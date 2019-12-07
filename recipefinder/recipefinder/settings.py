@@ -1,3 +1,4 @@
+from datetime import timedelta
 """
 Django settings for recipefinder project.
 
@@ -107,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -137,3 +137,12 @@ REST_FRAMEWORK = {
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
+
+#login time-out
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
