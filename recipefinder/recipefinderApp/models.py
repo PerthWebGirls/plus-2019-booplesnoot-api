@@ -9,20 +9,8 @@ User = get_user_model()
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # date_of_birth = models.DateField("Date of birth", auto_now=False, auto_now_add=False)
-    # nick_name = models.CharField(max_length=50, null=True)
+    nick_name = models.CharField(max_length=50, null=True)
     image = models.ImageField(upload_to="profile/", null=True)
-
-    class Meta:
-        ordering = ("user",)
-
-    def __str__(self):
-        return str(self.user).capitalize()
-
-# -------------------------------- #
-
-
-class Preferences(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     metric = models.BooleanField(default=True)
     cooking_time = models.ManyToManyField("Cooktime")
     diet = models.ManyToManyField("Diet")
@@ -34,10 +22,40 @@ class Preferences(models.Model):
     def __str__(self):
         return str(self.user).capitalize()
 
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+
 # -------------------------------- #
 
+
+# class Preferences(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     metric = models.BooleanField(default=True)
+#     cooking_time = models.ManyToManyField("Cooktime")
+#     diet = models.ManyToManyField("Diet")
+#     cuisine = models.ManyToManyField("Cuisine")
+
+#     class Meta:
+#         ordering = ("user",)
+
+#     def __str__(self):
+#         return str(self.user).capitalize()
+
+
+# -------------------------------- #
+
+
 class Cooktime(models.Model):
-    cook_times= models.CharField(max_length=50)
+    cook_times = models.CharField(max_length=50)
 
     class Meta:
         ordering = ("cook_times",)
@@ -45,7 +63,9 @@ class Cooktime(models.Model):
     def __str__(self):
         return str(self.cook_times).capitalize()
 
+
 # -------------------------------- #
+
 
 class Diet(models.Model):
     name = models.CharField(max_length=50)
@@ -56,7 +76,9 @@ class Diet(models.Model):
     def __str__(self):
         return str(self.name).capitalize()
 
+
 # -------------------------------- #
+
 
 class DietRequirement(models.Model):
     user = models.ForeignKey(User, related_name="diet_requirements", on_delete=models.CASCADE)
@@ -67,6 +89,7 @@ class DietRequirement(models.Model):
 
     def __str__(self):
         return str(self.user).capitalize()
+
 
 # -------------------------------- #
 
@@ -93,7 +116,6 @@ class Recipe(models.Model):
 
 
 # --------------------- #
-
 
 
 class Ingredient(models.Model):
@@ -142,3 +164,4 @@ class Comments(models.Model):
 
 #     def __str__(self):
 #         return str(self.recipe).capitalize()
+
