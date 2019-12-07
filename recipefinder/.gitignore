@@ -3,3 +3,4 @@ myenv/*
 *.pyc
 .vscode/*
 *.env
+*.sqlite3

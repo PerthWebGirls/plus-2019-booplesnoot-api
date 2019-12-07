@@ -78,17 +78,22 @@ WSGI_APPLICATION = "recipefinder.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "recipefinder",  # you will need to create this db
+#         "USER": "postgres",  # enter your user name here
+#         "PASSWORD": "poppies8",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "recipefinder",  # you will need to create this db
-        "USER": "postgres",  # enter your user name here
-        "PASSWORD": "poppies8",
-        "HOST": "localhost",
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -121,3 +126,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())

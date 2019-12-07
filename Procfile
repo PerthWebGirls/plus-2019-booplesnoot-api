@@ -1,1 +1,1 @@
-web: waitress-serve recipefinder.wsgi:application
+web: cd recipefinder && waitress-serve recipefinder.wsgi:application
