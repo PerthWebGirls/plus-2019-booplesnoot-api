@@ -64,3 +64,15 @@ class HelloView(APIView):
     def get(self, request):
         content = {"message": "Hello, World!"}
         return Response(content)
+
+""""
+Account view to show details for current logged in user
+"""""
+
+class AccountView(APIView):
+
+    def get(self, request):
+        if request.user is None:
+            return Response({'error': 'Invalid Token'}, status=401)
+        content = UserSerializer(request.user, context={'request': request}).data
+        return Response(content)
