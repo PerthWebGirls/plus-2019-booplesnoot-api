@@ -86,7 +86,7 @@ Registration view
 class RegistrationView(APIView):
 
     def post(self, request):
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.data)
 
         if form.is_valid():
             user = form.save()
