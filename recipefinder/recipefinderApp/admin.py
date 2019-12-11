@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import Profile, Preferences, Diet, DietRequirement, Recipe, Ingredient, Cuisine, Comments, Cooktime
+from .models import Profile, Diet, DietRequirement, Recipe, Ingredient, Cuisine, Comments, Cooktime
 
 admin.site.register(Profile)
-admin.site.register(Preferences)
+# admin.site.register(Preferences)
 admin.site.register(Diet)
 admin.site.register(DietRequirement)
 admin.site.register(Recipe)

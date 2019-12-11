@@ -1,3 +1,4 @@
+from datetime import timedelta
 """
 Django settings for recipefinder project.
 
@@ -31,14 +32,16 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "recipefinderApp.apps.RecipefinderappConfig",
+    # django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # third party
     "rest_framework",
-    "recipefinderApp",
     "corsheaders",
 ]
 
@@ -105,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -127,6 +129,20 @@ STATIC_URL = "/static/"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication",],
+}
+
+
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
+
+#login time-out
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}

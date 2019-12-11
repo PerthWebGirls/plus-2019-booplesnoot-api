@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
+from .forms import RegistrationForm
+
 
 from .serializers import UserSerializer, GroupSerializer, ProfileSerializer
 from .models import Profile
@@ -63,3 +65,36 @@ class HelloView(APIView):
     def get(self, request):
         content = {"message": "Hello, World!"}
         return Response(content)
+
+""""
+Account view to show details for current logged in user
+"""""
+
+class AccountView(APIView):
+
+    def get(self, request):
+        if request.user is None:
+            return Response({'error': 'Invalid Token'}, status=401)
+        content = UserSerializer(request.user, context={'request': request}).data
+        return Response(content)
+
+
+"""
+Registration view
+
+"""
+class RegistrationView(APIView):
+
+    def post(self, request):
+        form = RegistrationForm(request.data)
+
+        if form.is_valid():
+            user = form.save()
+            content = UserSerializer(user, context={'request': request}).data
+            return Response(content)
+        else:
+            return Response({ 'errors': form.errors }, status=422)
+
+
+
+
